@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 221 83% 11%; /* Azul oscuro: hsl(221, 83%, 11%) */
+    --foreground: 45 74% 85%; /* Beige/Dorado claro: hsl(45, 74%, 85%) */
+
+    --card: 221 83% 15%; /* Un azul un poco más claro para cards */
+    --card-foreground: 45 74% 85%;
+ 
+    --popover: 221 83% 10%;
+    --popover-foreground: 45 74% 85%;
+ 
+    --primary: 45 100% 51%; /* Dorado principal: hsl(45, 100%, 51%) */
+    --primary-foreground: 221 83% 11%;
+ 
+    --secondary: 45 74% 80%; /* Dorado más suave para secundario */
+    --secondary-foreground: 221 83% 11%;
+ 
+    --muted: 221 50% 30%;
+    --muted-foreground: 45 50% 70%;
+ 
+    --accent: 45 100% 60%; /* Dorado más brillante para acentos */
+    --accent-foreground: 221 83% 11%;
+ 
+    --destructive: 0 72% 51%; /* Rojo para destructivo */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 221 50% 40%;
+    --input: 221 50% 25%;
+    --ring: 45 100% 51%;
+ 
+    --radius: 0.75rem; /* Bordes un poco más redondeados */
+  }
+ 
+  .dark {
+    --background: 221 83% 11%;
+    --foreground: 45 74% 85%;
+
+    --card: 221 83% 15%;
+    --card-foreground: 45 74% 85%;
+ 
+    --popover: 221 83% 10%;
+    --popover-foreground: 45 74% 85%;
+ 
+    --primary: 45 100% 51%;
+    --primary-foreground: 221 83% 11%;
+ 
+    --secondary: 45 74% 80%;
+    --secondary-foreground: 221 83% 11%;
+ 
+    --muted: 221 50% 30%;
+    --muted-foreground: 45 50% 70%;
+ 
+    --accent: 45 100% 60%;
+    --accent-foreground: 221 83% 11%;
+ 
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 221 50% 40%;
+    --input: 221 50% 25%;
+    --ring: 45 100% 51%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Roboto', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    @apply text-primary;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(221, 83%, 15%); /* --card */
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(45, 100%, 51%); /* --primary */
+  border-radius: 10px;
+  border: 2px solid hsl(221, 83%, 15%); /* --card */
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(45, 100%, 60%); /* --accent */
+}
+
+/* Glassmorphism effect for cards */
+.glass-card {
+  @apply bg-card/70 backdrop-blur-lg border border-primary/30 rounded-xl shadow-2xl;
+}
+
+/* Input styling */
+.form-input {
+  @apply w-full px-4 py-3 rounded-lg bg-input text-foreground placeholder-muted-foreground border border-border focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all duration-300;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-foreground mb-1;
+}
+
+/* Table styling */
+.table-container {
+  @apply overflow-x-auto rounded-lg shadow-lg border border-primary/30;
+}
+.custom-table {
+  @apply min-w-full divide-y divide-border;
+}
+.custom-table th {
+  @apply px-6 py-4 text-left text-xs font-medium text-primary uppercase tracking-wider bg-card/80;
+}
+.custom-table td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-foreground bg-card/50;
+}
+.custom-table tbody tr:hover {
+  @apply bg-card;
+}

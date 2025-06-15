@@ -1,0 +1,5 @@
+<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+  <rect width="50" height="50" fill="#FBBF24"/>
+  <path d="M25 5 C 10 15, 10 35, 25 45 C 40 35, 40 15, 25 5 Z" fill="#0A1931"/>
+  <text x="25" y="30" font-family="Orbitron, sans-serif" font-size="12" fill="#FBBF24" text-anchor="middle" font-weight="bold">AD</text>
+</svg>

@@ -1,0 +1,5 @@
+<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+  <rect width="50" height="50" fill="#DC2626"/>
+  <path d="M10 10 L40 10 L25 40 Z" fill="#F0E68C"/>
+  <text x="25" y="25" font-family="Orbitron, sans-serif" font-size="12" fill="#DC2626" text-anchor="middle" font-weight="bold">FR</text>
+</svg>
