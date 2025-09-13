@@ -1,21 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Shield, Users, BarChart2, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Shield, ArrowLeft } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
+
+import { supabase } from '../lib/supabaseClient'; 
 
 const EquiposPage = () => {
+  const { toast } = useToast();
   const [equipos, setEquipos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedTeams = JSON.parse(localStorage.getItem('clasificacionTeams')) || [
-      { id: 1, name: 'Titanes FC', dt: 'Carlos Bianchi', estadio: 'La Bombonera Virtual', logo: 'titanes-fc.svg', plantillaSize: 22, mediaEquipo: 85 },
-      { id: 2, name: 'Gladiadores SV', dt: 'Pep Guardiola', estadio: 'Camp Nou Virtual', logo: 'gladiadores-sv.svg', plantillaSize: 24, mediaEquipo: 88 },
-      { id: 3, name: 'Furia Roja', dt: 'Diego Simeone', estadio: 'Wanda Virtual', logo: 'furia-roja.svg', plantillaSize: 20, mediaEquipo: 82 },
-      { id: 4, name: 'Lobos del Norte', dt: 'Marcelo Gallardo', estadio: 'Monumental Virtual', logo: 'lobos-norte.svg', plantillaSize: 25, mediaEquipo: 86 },
-      { id: 5, name: 'Águilas Doradas', dt: 'Jurgen Klopp', estadio: 'Anfield Virtual', logo: 'aguilas-doradas.svg', plantillaSize: 23, mediaEquipo: 87 },
-    ];
-    setEquipos(storedTeams);
+    const fetchEquipos = async () => {
+      const { data, error } = await supabase.rpc('fn_obtener_equipos_completos');
+      if (error) {
+        console.error('Error al obtener equipos:', error);
+      } else {
+        setEquipos(data);
+      }
+    };
+
+    fetchEquipos();
   }, []);
+
+  const verInformacionEquipo = async (equipoId) => {
+      const { data: sessionData } = await supabase.auth.getSession();
+  
+      if (!sessionData.session) {
+        toast({
+          title: "Sesión requerida",
+          description: "Debes iniciar sesión para ver la información del equipo seleccionado.",
+          variant: "destructive",
+        });
+  
+        // Redirigir después de un pequeño retraso para que el toast se muestre
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+  
+        return;
+      }
+  
+      navigate(`/equipo/general/informacion/${equipoId}`);
+    };
 
   return (
     <>
@@ -28,41 +56,38 @@ const EquiposPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {equipos.map((equipo, index) => (
           <motion.div
-            key={equipo.id}
+            key={equipo.equi_id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="glass-card overflow-hidden"
+            className="glass-card overflow-hidden hover:ring-2 hover:ring-primary cursor-pointer"
+            onClick={() => verInformacionEquipo(equipo.equi_id)}
           >
             <div className="p-6">
               <div className="flex items-center space-x-4 mb-4">
-                <img-replace src={`/team-logos/${equipo.logo}`} alt={`${equipo.name} logo`} className="h-16 w-16 object-contain" />
+                <img
+                  src={equipo.equi_escudourl } // Asegura ruta por si es null
+                  alt={`${equipo.equi_nombre} logo`}
+                  className="h-16 w-16 object-contain"
+                />
                 <div>
-                  <h2 className="text-2xl font-bold text-primary font-orbitron">{equipo.name}</h2>
-                  <p className="text-sm text-muted-foreground">DT: {equipo.dt}</p>
+                  <h2 className="text-2xl font-bold text-primary font-orbitron">{equipo.equi_nombre}</h2>
+                  <p className="text-sm text-muted-foreground">DT: {equipo.equi_dt}</p>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center">
-                  <Users size={16} className="mr-2 text-primary" />
-                  <span>Plantilla: {equipo.plantillaSize} jugadores</span>
-                </div>
-                <div className="flex items-center">
-                  <BarChart2 size={16} className="mr-2 text-primary" />
-                  <span>Media del Equipo: <span className="font-semibold text-yellow-400">{equipo.mediaEquipo}</span></span>
-                </div>
-                <div className="flex items-center">
                   <Shield size={16} className="mr-2 text-primary" />
-                  <span>Estadio: {equipo.estadio}</span>
+                  <span>Presupuesto: {equipo.equi_presupuesto} M</span>
                 </div>
               </div>
             </div>
-            <Link 
-              to={`/mercado-equipos/equipos/${equipo.id}`} 
+            {/* <div 
+              onClick={() => verInformacionEquipo(equipo.equi_id)}
               className="block w-full bg-primary/20 hover:bg-primary/30 text-primary font-semibold p-3 text-center transition-colors"
             >
               Ver Ficha Completa
-            </Link>
+            </div> */}
           </motion.div>
         ))}
       </div>

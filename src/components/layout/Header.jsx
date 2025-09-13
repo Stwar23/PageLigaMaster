@@ -15,12 +15,12 @@ const Header = ({ navItems }) => {
   const handleNavLinkClick = (item) => {
     if (item.action) {
       item.action();
-      navigate('/'); 
+      navigate('/');
     }
     setIsOpen(false);
     setOpenSubMenu(null);
   };
-  
+
   const handleSubMenuToggle = (itemName) => {
     setOpenSubMenu(openSubMenu === itemName ? null : itemName);
   };
@@ -32,19 +32,29 @@ const Header = ({ navItems }) => {
           <button
             onClick={() => !isMobile && handleSubMenuToggle(item.name)}
             onMouseEnter={() => !isMobile && setOpenSubMenu(item.name)}
-            onMouseLeave={() => !isMobile && setTimeout(() => {
-              if (!document.querySelector(".group:hover .submenu-desktop")) {
-                setOpenSubMenu(null);
-              }
-            }, 100)}
+            onMouseLeave={() =>
+              !isMobile &&
+              setTimeout(() => {
+                if (!document.querySelector('.group:hover .submenu-desktop')) {
+                  setOpenSubMenu(null);
+                }
+              }, 100)
+            }
             className={cn(
-              "px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1 transition-colors duration-300 w-full text-left md:w-auto",
-              openSubMenu === item.name ? "bg-primary/20 text-primary" : "text-foreground hover:bg-primary/10 hover:text-primary"
+              'px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1 transition-colors duration-300 w-full text-left md:w-auto',
+              openSubMenu === item.name
+                ? 'bg-primary/20 text-primary'
+                : 'text-foreground hover:bg-primary/10 hover:text-primary'
             )}
           >
             {item.icon}
             <span>{item.name}</span>
-            <ChevronDown size={16} className={`transition-transform duration-200 ${openSubMenu === item.name ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              size={16}
+              className={`transition-transform duration-200 ${
+                openSubMenu === item.name ? 'rotate-180' : ''
+              }`}
+            />
           </button>
           {openSubMenu === item.name && !isMobile && (
             <motion.div
@@ -52,21 +62,23 @@ const Header = ({ navItems }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               className={cn(
-                "absolute top-full mt-2 w-56 rounded-md shadow-lg bg-card/90 backdrop-blur-md ring-1 ring-primary/20 ring-opacity-5 focus:outline-none py-1 z-20 submenu-desktop",
+                'absolute top-full mt-2 w-56 rounded-md shadow-lg bg-card/90 backdrop-blur-md ring-1 ring-primary/20 ring-opacity-5 focus:outline-none py-1 z-20 submenu-desktop',
                 item.subMenuOffset || 'left-0'
               )}
               onMouseEnter={() => setOpenSubMenu(item.name)}
               onMouseLeave={() => setOpenSubMenu(null)}
             >
-              {item.subMenu.map(subItem => (
+              {item.subMenu.map((subItem) => (
                 <NavLink
                   key={subItem.name}
                   to={subItem.path}
                   onClick={() => handleNavLinkClick(subItem)}
                   className={({ isActive }) =>
                     cn(
-                      "block px-4 py-2 text-sm flex items-center space-x-2",
-                      isActive ? "bg-primary/20 text-primary" : "text-foreground hover:bg-primary/10 hover:text-primary"
+                      'block px-4 py-2 text-sm flex items-center space-x-2',
+                      isActive
+                        ? 'bg-primary/20 text-primary'
+                        : 'text-foreground hover:bg-primary/10 hover:text-primary'
                     )
                   }
                 >
@@ -77,21 +89,23 @@ const Header = ({ navItems }) => {
             </motion.div>
           )}
           {isMobile && openSubMenu === item.name && (
-             <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="pl-4"
             >
-              {item.subMenu.map(subItem => (
+              {item.subMenu.map((subItem) => (
                 <NavLink
                   key={subItem.name}
                   to={subItem.path}
                   onClick={() => handleNavLinkClick(subItem)}
                   className={({ isActive }) =>
                     cn(
-                      "block px-3 py-2 rounded-md text-sm flex items-center space-x-2",
-                      isActive ? "bg-primary/20 text-primary" : "text-foreground hover:bg-primary/10 hover:text-primary"
+                      'block px-3 py-2 rounded-md text-sm flex items-center space-x-2',
+                      isActive
+                        ? 'bg-primary/20 text-primary'
+                        : 'text-foreground hover:bg-primary/10 hover:text-primary'
                     )
                   }
                 >
@@ -112,9 +126,11 @@ const Header = ({ navItems }) => {
         onClick={() => handleNavLinkClick(item)}
         className={({ isActive }) =>
           cn(
-            "px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-2 transition-colors duration-300",
-            isActive ? "bg-primary/20 text-primary" : "text-foreground hover:bg-primary/10 hover:text-primary",
-            isMobile ? "text-base py-3" : ""
+            'px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-2 transition-colors duration-300',
+            isActive
+              ? 'bg-primary/20 text-primary'
+              : 'text-foreground hover:bg-primary/10 hover:text-primary',
+            isMobile ? 'text-base py-3' : ''
           )
         }
       >
@@ -124,24 +140,45 @@ const Header = ({ navItems }) => {
     );
   };
 
-
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg shadow-lg border-b border-primary/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-3" onClick={() => { setIsOpen(false); setOpenSubMenu(null); }}>
-            <img-replace src="/zonanorte-logo.svg" alt="Zona Norte Logo" className="h-12 w-12" />
+          <Link
+            to="/"
+            className="flex items-center space-x-3"
+            onClick={() => {
+              setIsOpen(false);
+              setOpenSubMenu(null);
+            }}
+          >
+            <img
+              src="https://igxdgvxcfiucrlqizrhj.supabase.co/storage/v1/object/sign/imagenespagina/ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NGE0Y2ZhMC02NWVmLTRlMDgtYmVkZS03Yjc5ZGI2NDYxMjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZW5lc3BhZ2luYS9pYS5wbmciLCJpYXQiOjE3NTA3Mjg2MjEsImV4cCI6MTc4MjI2NDYyMX0.36OYAFxvhC3hSem2kQA1hULP_JrxkdSQW_6ejmOWcss"
+              alt="Zona Norte Logo"
+              className="h-12 w-12 rounded-full"
+            />
             <div className="flex flex-col">
-              <span className="text-2xl font-bold text-primary font-orbitron">Zona Norte</span>
-              <em className="text-xs text-secondary font-roboto italic">Fortuna favet audacibus</em>
+              <span className="text-2xl font-bold text-primary font-orbitron">
+                Zona Norte
+              </span>
             </div>
           </Link>
           <nav className="hidden md:flex space-x-1 items-center">
-            {navItems.map(item => renderNavItem(item, false))}
+            {navItems.map((item) => (
+              <div key={item.name}>{renderNavItem(item, false)}</div>
+            ))}
           </nav>
           <div className="md:hidden">
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={24} className="text-primary" /> : <Menu size={24} className="text-primary" />}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? (
+                <X size={24} className="text-primary" />
+              ) : (
+                <Menu size={24} className="text-primary" />
+              )}
             </Button>
           </div>
         </div>
@@ -155,7 +192,9 @@ const Header = ({ navItems }) => {
             className="md:hidden bg-background/95 border-t border-primary/20"
           >
             <nav className="flex flex-col space-y-1 px-2 py-3">
-              {navItems.map(item => renderNavItem(item, true))}
+              {navItems.map((item) => (
+                <div key={item.name}>{renderNavItem(item, true)}</div>
+              ))}
             </nav>
           </motion.div>
         )}

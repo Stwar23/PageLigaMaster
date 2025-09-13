@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ const LoginPage = () => {
   const { session } = useContext(AuthContext);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [esValidoRegistrar, setEsValidoRegistrar] = useState();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,8 +32,8 @@ const LoginPage = () => {
           description: error.message || "Correo o contraseña incorrectos.",
         });
       } else if (data.session) {
-        const userRole = data.user?.user_metadata?.role;
-        if (userRole === 'admin') {
+        const userRole = data.user?.user_metadata?.roles;
+        if (userRole === 'Administrador') {
           navigate('/admin');
         } else {
           navigate('/');
@@ -54,36 +55,20 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-  
-  const handleDevAdminSignUp = async () => {
-    setLoading(true);
-    const adminEmail = 'alejo@zonanorte.com'; 
-    const adminPassword = 'AdminPassword123!'; // Asegúrate de usar una contraseña segura y recordarla
 
-    const { data, error } = await supabase.auth.signUp({
-      email: adminEmail,
-      password: adminPassword,
-      options: {
-        data: {
-          role: 'admin', 
-          username: 'Alejo'
-        }
-      }
-    });
-
-    if (error) {
-      if (error.message.includes("User already registered")) {
-        toast({ title: "Info (Admin)", description: "El usuario admin 'Alejo' ya existe. Intenta iniciar sesión." });
-      } else if (error.message.includes("rate limit")) {
-        toast({ variant: "destructive", title: "Límite de Tasa Excedido", description: "Demasiados intentos de registro. Espera un momento y prueba de nuevo, o deshabilita la confirmación por email en Supabase para desarrollo." });
+  useEffect(() => {
+    const fetchValidarRegistro = async () => {
+      const { data, error } = await supabase.rpc("fn_verificar_registro_nuevos_usuarios");
+      
+      if (error) {
+        console.error("Error al obtener posiciones:", error);
       } else {
-        toast({ variant: "destructive", title: "Error de Registro (Admin)", description: error.message });
+        setEsValidoRegistrar(data);
       }
-    } else if (data.user) {
-      toast({ title: "Admin Registrado", description: "Usuario admin 'Alejo' creado/confirmado. Si la confirmación por email está activa en Supabase, revisa tu correo." });
-    }
-    setLoading(false);
-  };
+    };
+
+    fetchValidarRegistro();
+  }, []);
 
 
   if (session) {
@@ -124,7 +109,7 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="form-input"
-                placeholder="tu@correo.com"
+                placeholder="tunombreusuario@zonanorte.com"
                 required
                 disabled={loading}
               />
@@ -149,14 +134,19 @@ const LoginPage = () => {
             </Button>
           </form>
           <p className="text-xs text-center text-muted-foreground">
-            ¿No tienes cuenta? Contacta a un administrador para el registro.
+            ¿No tienes cuenta? Contacta a un administrador para que habilite el registro.
           </p>
-          <Button onClick={handleDevAdminSignUp} variant="outline" size="sm" className="w-full mt-2 text-xs" disabled={loading}>
-            {loading ? 'Procesando...' : <><UserPlus size={14} className="mr-1" /> Dev: Crear/Verificar Admin (Alejo)</>}
-          </Button>
-           <p className="text-xs text-center text-muted-foreground mt-1">
-            Admin Email: alejo@zonanorte.com / Pass: AdminPassword123!
-          </p>
+
+          <div className="text-center">
+            {esValidoRegistrar === 1 ? (
+              <Button className="w-full"
+                onClick={() => navigate(`/login/registro`)}
+              > Registrarme</Button>
+            ) : (
+              ""
+            )}
+          </div>
+          
         </motion.div>
       </div>
     </>

@@ -21,7 +21,7 @@ const HomePage = () => (
           transition={{ duration: 0.7, type: "spring", stiffness: 100, delay: 0.2 }}
           className="inline-block mb-6"
         >
-          <img src="/zonanorte-logo.svg" alt="Zona Norte Logo Grande" className="h-24 w-24 md:h-32 md:w-32 mx-auto filter drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
+          <img src="https://igxdgvxcfiucrlqizrhj.supabase.co/storage/v1/object/sign/imagenespagina/ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NGE0Y2ZhMC02NWVmLTRlMDgtYmVkZS03Yjc5ZGI2NDYxMjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZW5lc3BhZ2luYS9pYS5wbmciLCJpYXQiOjE3NTA3Mjg2MjEsImV4cCI6MTc4MjI2NDYyMX0.36OYAFxvhC3hSem2kQA1hULP_JrxkdSQW_6ejmOWcss" alt="Zona Norte Logo Grande" className="h-24 w-24 md:h-32 md:w-32 mx-auto filter drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
         </motion.div>
         <motion.h1 
           className="text-5xl md:text-7xl font-bold mb-4 font-orbitron text-shadow-gold"
@@ -31,14 +31,14 @@ const HomePage = () => (
         >
           Bienvenido a Zona Norte
         </motion.h1>
-        <motion.p 
+        {/* <motion.p 
           className="text-2xl md:text-3xl text-gold-light italic mb-10 font-roboto text-shadow-sm"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.7 }}
         >
           "Fortuna favet audacibus"
-        </motion.p>
+        </motion.p> */}
         <motion.p 
           className="text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed"
           initial={{ opacity: 0 }}
